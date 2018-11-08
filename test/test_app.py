@@ -1,3 +1,42 @@
+import re
 
-def test_app_returns_hello_world(client):
-    assert client.get("/").data == b"Hello World"
+def get_key(response):
+    return re.match(r'http://localhost/([a-zA-Z0-9].*)', response.data.decode('utf-8')).group(1)
+
+
+def test_adding_data(client):
+    response = client.put("/", data = 'Hello World')
+    assert response.status == '200 OK'
+    assert re.match(r'http://localhost/[a-zA-Z0-9].*', response.data.decode('utf-8'))
+
+
+def test_getting_data(client):
+    key = get_key(client.put("/", data = 'Hello World'))
+    client.get(f'/{key}').data == b'Hello World'
+
+
+def test_data_limit_is_enforced(client):
+    pass
+
+
+def test_multiple_keys_can_be_used(client):
+    hello = get_key(client.put("/", data = 'Hello World'))
+    goodbye = get_key(client.put("/", data = 'Goodbye World'))
+
+    assert client.get(f'/{hello}').data == b'Hello World'
+    assert client.get(f'/{goodbye}').data == b'Goodbye World'
+
+
+def test_data_is_deleted_after_first_access(client):
+    hello = get_key(client.put("/", data = 'Hello World'))
+
+    assert client.get(f'/{hello}').data == b'Hello World'
+    assert client.get(f'/{hello}').status == '404 NOT FOUND'
+
+
+def test_data_is_deleted_after_timeout_without_access(client):
+    pass
+
+
+def test_returns_404_when_key_not_found(client):
+    assert client.get("/something_never_found").status == "404 NOT FOUND"
