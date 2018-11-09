@@ -1,6 +1,6 @@
-from burnafterme.app import app
+from burnafterme.app import create_app
 import pytest
 
 @pytest.fixture
 def client():
-    return app.test_client()
+    return create_app("DevProfile").test_client()

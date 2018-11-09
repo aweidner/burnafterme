@@ -15,10 +15,6 @@ def test_getting_data(client):
     client.get(f'/{key}').data == b'Hello World'
 
 
-def test_data_limit_is_enforced(client):
-    pass
-
-
 def test_multiple_keys_can_be_used(client):
     hello = get_key(client.put("/", data = 'Hello World'))
     goodbye = get_key(client.put("/", data = 'Goodbye World'))
