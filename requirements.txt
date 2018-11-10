@@ -1,7 +1,9 @@
 atomicwrites==1.2.1
 attrs==18.2.0
+-e git+https://github.com/aweidner/burnafterme.git@910f5b42b2d155048b1702ea026702a4b16e37c9#egg=burnafterme
 Click==7.0
 Flask==1.0.2
+Flask-Redis==0.3.0
 itsdangerous==1.1.0
 Jinja2==2.10
 MarkupSafe==1.1.0
@@ -10,5 +12,6 @@ pluggy==0.8.0
 py==1.7.0
 pytest==3.10.0
 pytest-flask==0.14.0
+redis==2.10.6
 six==1.11.0
 Werkzeug==0.14.1
